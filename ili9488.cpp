@@ -28,11 +28,11 @@ void InitILI9488()
   BEGIN_SPI_COMMUNICATION();
   {
       //0xE0 - PGAMCTRL Positive Gamma Control
-      SPI_TRANSFER(0xE0, 0x00, 0x03, 0x09, 0x08, 0x16, 0x0A, 0x3F, 0x78, 0x4C, 0x09, 0x0A, 0x08, 0x16, 0x1A, 0x0F);
+      SPI_TRANSFER(0xE0, 0xF0, 0x00, 0x0A, 0x10, 0x12, 0x1B, 0x39, 0x44, 0x47, 0x28, 0x12, 0x10, 0x16, 0x1b, 0x0F);
       //0xE1 - NGAMCTRL Negative Gamma Control
-      SPI_TRANSFER(0xE1, 0x00, 0x16, 0x19, 0x03, 0x0F, 0x05, 0x32, 0x45, 0x46, 0x04, 0x0E, 0x0D, 0x35, 0x37, 0x0F);
+      SPI_TRANSFER(0xE1, 0xF0, 0x00, 0x1A, 0x10, 0x11, 0x1A, 0x3B, 0x34, 0x4E, 0x3A, 0x12, 0x16, 0x21, 0x22, 0x0F);
       // 0xC0 Power Control 1
-      SPI_TRANSFER(0xC0, 0x17, 0x15);
+      SPI_TRANSFER(0xC0, 0x18, 0x16);
       // 0xC1 Power Control 2
       SPI_TRANSFER(0xC1, 0x41);
       // 0xC5 VCOM Control
@@ -58,21 +58,24 @@ void InitILI9488()
 #ifdef DISPLAY_ROTATE_180_DEGREES
     madctl ^= MADCTL_ROTATE_180_DEGREES;
 #endif
+#ifndef DISPLAY_OUTPUT_LANDSCAPE
+    madctl ^= MADCTL_COLUMN_ADDRESS_ORDER_SWAP;
+#endif
     //
     // Shifted value of bits [7:5] (MY - ROW_ADDRESS_ORDER_SWAP, MX - COLUMN_ADDRESS_ORDER_SWAP, MV ROW_COLUMN_EXCHANGE)
     // and their resulting effect on the orientation of the image
     // relative to the physical screen:
-    // 0x40 0 deg (W = 320, H = 480, FPC connector at bottom)
-    // 0x20 90 deg (W = 480, H = 320, FPC connector on right)
-    // 0x80 180 deg (W = 320, H = 480, FPC connector on top)
-    // 0xE0 270 deg (W = 480, H = 320, FPC connector on left)
+    // 0x40 0 deg (W = 320, H = 320, FPC connector at bottom)
+    // 0x20 90 deg (W = 320, H = 320, FPC connector on right)
+    // 0x80 180 deg (W = 320, H = 320, FPC connector on top)
+    // 0xE0 270 deg (W = 320, H = 320, FPC connector on left)
       // 0x36 Memory Access Control - sets display rotation.
       SPI_TRANSFER(0x36, madctl);
 
       // 0x3A Interface Pixel Format (bit depth color space)
       SPI_TRANSFER(0x3A, 0x66);
       // 0xB0 Interface Mode Control
-      SPI_TRANSFER(0xB0, 0x80);
+      SPI_TRANSFER(0xB0, 0x00);
       // 0xB1 Frame Rate Control (in Normal Mode/Full Colors)
       SPI_TRANSFER(0xB1, 0xA0);
 
