@@ -16,6 +16,7 @@ cmake \
   -DDMA_TX_CHANNEL=1 \
   -DDMA_RX_CHANNEL=5 \
   -DSTATISTICS=0 \
+  -DARMV8A=ON \
   ..
 make -C build -j4
 sudo killall fbcp-ili9341 2>&1 || true
