@@ -7,11 +7,23 @@ void DrawText(uint16_t *framebuffer, int framebufferWidth, int framebufferStride
 #ifdef DISPLAY_FLIP_ORIENTATION_IN_SOFTWARE
   const int W = framebufferHeight;
   const int H = framebufferWidth;
+
+#ifndef DISPLAY_ROTATE_180_DEGREES
 #define AT(x, y) x*framebufferStrideBytes+y
+#else
+#define AT(x, y) (W-x)*framebufferStrideBytes+(H-1-y)
+#endif
+
 #else
   const int W = framebufferWidth;
   const int H = framebufferHeight;
+
+#ifndef DISPLAY_ROTATE_180_DEGREES
 #define AT(x, y) y*framebufferStrideBytes+x
+#else
+#define AT(x, y) (H-1-y)*framebufferStrideBytes+(W-x)
+#endif
+
 #endif
 
   framebufferStrideBytes >>= 1; // to uint16 elements
