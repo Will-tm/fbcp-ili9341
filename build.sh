@@ -13,14 +13,14 @@ cmake \
   -DDISPLAY_INVERT_COLORS=ON \
   -DDISPLAY_ROTATE_180_DEGREES=ON \
   -DDISPLAY_CROPPED_INSTEAD_OF_SCALING=ON \
-  -DDMA_TX_CHANNEL=1 \
+  -DDMA_TX_CHANNEL=7 \
   -DDMA_RX_CHANNEL=5 \
   -DSTATISTICS=0 \
   -DARMV8A=ON \
   ..
 make -C build -j4
-sudo killall fbcp-ili9341 2>&1 || true
-sudo ./build/fbcp-ili9341
+#sudo killall fbcp-ili9341 2>&1 || true
+#sudo ./build/fbcp-ili9341
 
 #
 # /boot/config.txt

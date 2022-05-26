@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Auto connect bluetooth controllers
+#
+
+/usr/bin/fbcp-ili9341 &
+exit 0

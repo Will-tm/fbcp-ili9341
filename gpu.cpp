@@ -133,6 +133,11 @@ bool SnapshotFramebuffer(uint16_t *destination)
   // corner of the subrectangle to capture. Therefore do dirty pointer arithmetic to adjust for this. To make this safe, videoCoreFramebuffer is allocated
   // double its needed size so that this adjusted pointer does not reference outside allocated memory (if it did, vc_dispmanx_resource_read_data() was seen
   // to randomly fail and then subsequently hang if called a second time)
+
+#define DISPLAY_ROTATE_180_ORIENTATION_IN_SOFTWARE
+
+#ifndef DISPLAY_ROTATE_180_ORIENTATION_IN_SOFTWARE
+
 #ifdef DISPLAY_FLIP_ORIENTATION_IN_SOFTWARE
   static uint16_t *tempTransposeBuffer = 0; // Allocate as static here to keep the number of #ifdefs down a bit
   const int pixelWidth = gpuFrameHeight+excessPixelsTop+excessPixelsBottom;
@@ -162,6 +167,35 @@ bool SnapshotFramebuffer(uint16_t *destination)
   for(int y = 0; y < gpuFrameHeight; ++y)
     for(int x = 0; x < gpuFrameWidth; ++x)
       destination[y*(gpuFramebufferScanlineStrideBytes>>1)+x] = tempTransposeBuffer[x*(stride>>1)+y];
+#endif
+
+#else 
+
+  static uint16_t *tempTransposeBuffer = 0; // Allocate as static here to keep the number of #ifdefs down a bit
+  const int pixelHeight = gpuFrameHeight+excessPixelsTop+excessPixelsBottom;
+  const int pixelWidth = gpuFrameWidth + excessPixelsLeft + excessPixelsRight;
+  const int stride = RoundUpToMultipleOf(pixelWidth*sizeof(uint16_t), 32);
+  if (!tempTransposeBuffer)
+  {
+    tempTransposeBuffer = (uint16_t *)Malloc(pixelHeight * stride * 2, "gpu.cpp tempTransposeBuffer");
+    tempTransposeBuffer += pixelHeight * (stride>>1);
+  }
+  uint16_t *destPtr = tempTransposeBuffer - excessPixelsLeft * (stride >> 1) - excessPixelsTop;
+
+  failed = vc_dispmanx_resource_read_data(screen_resource, &rect, destPtr, stride);
+  if (failed)
+  {
+    printf("vc_dispmanx_resource_read_data failed with return code %d!\n", failed);
+    MarkProgramQuitting();
+    return false;
+  }
+  // Transpose the snapshotted frame from landscape to portrait. The following takes around 0.5-1.0 msec
+  // of extra CPU time, so while this improves tearing to be perhaps a bit nicer visually, it probably
+  // is not good on the Pi Zero.
+  for(int y = 0; y < gpuFrameHeight; ++y)
+    for(int x = 0; x < gpuFrameWidth; ++x)
+      destination[y*(gpuFramebufferScanlineStrideBytes>>1)+x] = tempTransposeBuffer[(gpuFrameHeight-1-y)*(stride>>1)+(gpuFrameWidth-1-x)];
+
 #endif
 
 #endif
