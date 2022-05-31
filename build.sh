@@ -11,7 +11,7 @@ cmake \
   -DSPI_BUS_CLOCK_DIVISOR=8 \
   -DUSE_DMA_TRANSFERS=ON \
   -DDISPLAY_INVERT_COLORS=ON \
-  -DDISPLAY_ROTATE_180_DEGREES=ON \
+  -DDISPLAY_ROTATE_180_DEGREES=OFF \
   -DDISPLAY_CROPPED_INSTEAD_OF_SCALING=ON \
   -DDMA_TX_CHANNEL=7 \
   -DDMA_RX_CHANNEL=5 \
@@ -29,5 +29,4 @@ make -C build -j4
 # hdmi_mode=87
 # hdmi_cvt=320 288 60 1 0 0 0
 # hdmi_force_hotplug=1
-# display_rotate=2
 # avoid_warnings=2
