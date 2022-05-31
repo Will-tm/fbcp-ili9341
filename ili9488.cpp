@@ -36,7 +36,7 @@ void InitILI9488()
       // 0xC1 Power Control 2
       SPI_TRANSFER(0xC1, 0x44);
       // 0xC5 VCOM Control
-      SPI_TRANSFER(0xC5, 0x00, 0x30, 0x00);
+      SPI_TRANSFER(0xC5, 0x00, 0x38, 0xa0);
 
 // Memory access control. Determines display orientation,
 // display color filter and refresh order/direction.
