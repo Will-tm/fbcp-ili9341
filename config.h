@@ -25,7 +25,7 @@
 // times when there is no work to do, rather than sleeping to reduce power usage. The only expected
 // effect of this is that CPU usage shoots to 200%, while display update FPS is the same. Present
 // here to allow toggling to debug this assumption.
-// #define NO_THROTTLING
+#define NO_THROTTLING
 
 // If defined, display updates are synced to the vsync signal provided by the VideoCore GPU. That seems
 // to occur quite precisely at 60 Hz. Testing on PAL NES games that run at 50Hz, this will not work well,
@@ -33,7 +33,7 @@
 // output new frames at this vsync-detached interval, so there's a 50 Hz vs 60 Hz mismatch that results
 // in visible microstuttering. Still, providing this as an option, this might be good for content that
 // is known to run at native 60Hz.
-// #define USE_GPU_VSYNC
+#define USE_GPU_VSYNC
 
 // Always enable GPU VSync on the Pi Zero. Even though it is suboptimal and can cause stuttering, it saves battery.
 #if defined(SINGLE_CORE_BOARD)
@@ -60,7 +60,7 @@
 // #define DISPLAY_CROPPED_INSTEAD_OF_SCALING
 
 // If enabled, the main thread and SPI thread are executed with realtime priority
-// #define RUN_WITH_REALTIME_THREAD_PRIORITY
+#define RUN_WITH_REALTIME_THREAD_PRIORITY
 
 // If defined, progressive updating is always used (at the expense of slowing down refresh rate if it's
 // too much for the display to handle)
@@ -91,7 +91,7 @@
 
 // If defined, DMA usage is foremost used to save power consumption and CPU usage. If not defined,
 // DMA usage is tailored towards maximum performance.
-// #define ALL_TASKS_SHOULD_DMA
+#define ALL_TASKS_SHOULD_DMA
 
 // If defined, screen updates are performed in strictly one update rectangle per frame.
 // This reduces CPU consumption at the expense of sending more pixels. You can try enabling this

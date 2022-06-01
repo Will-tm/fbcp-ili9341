@@ -134,7 +134,7 @@ bool SnapshotFramebuffer(uint16_t *destination)
   // double its needed size so that this adjusted pointer does not reference outside allocated memory (if it did, vc_dispmanx_resource_read_data() was seen
   // to randomly fail and then subsequently hang if called a second time)
 
-#define DISPLAY_ROTATE_180_ORIENTATION_IN_SOFTWARE
+//#define DISPLAY_ROTATE_180_ORIENTATION_IN_SOFTWARE
 
 #ifndef DISPLAY_ROTATE_180_ORIENTATION_IN_SOFTWARE
 
