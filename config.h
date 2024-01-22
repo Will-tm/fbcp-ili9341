@@ -91,7 +91,7 @@
 
 // If defined, DMA usage is foremost used to save power consumption and CPU usage. If not defined,
 // DMA usage is tailored towards maximum performance.
-#define ALL_TASKS_SHOULD_DMA
+// #define ALL_TASKS_SHOULD_DMA
 
 // If defined, screen updates are performed in strictly one update rectangle per frame.
 // This reduces CPU consumption at the expense of sending more pixels. You can try enabling this
@@ -195,13 +195,13 @@
 // #define USE_DMA_TRANSFERS
 
 // If defined, enables code to manage the backlight.
-// #define BACKLIGHT_CONTROL
+#define BACKLIGHT_CONTROL
 
 #if defined(BACKLIGHT_CONTROL)
 
 // If enabled, reads keyboard for input events to detect when the system has gone inactive and backlight
 // can be turned off
-#define BACKLIGHT_CONTROL_FROM_KEYBOARD
+//#define BACKLIGHT_CONTROL_FROM_KEYBOARD
 
 // This device file is used to capture keyboard input. This may be "/dev/input/event0" or something else
 // on some Pis
